@@ -1,0 +1,636 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:wght@600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --saffron:#E8703A;--saffron-lt:#FDF0E8;--saffron-md:#F5C4A0;--saffron-dk:#B84E1E;
+  --herb:#4A7C59;--herb-lt:#EAF3EE;--herb-md:#A8CBB4;--herb-dk:#2D5C3C;
+  --turmeric:#C9921A;--turmeric-lt:#FDF5E0;
+  --cream:#FDFAF5;--cream2:#F5F0E8;--cream3:#EDE5D8;
+  --ink:#1E1B16;--ink-md:#5C5650;--ink-lt:#9A9490;
+  --white:#FFFFFF;--border:rgba(30,27,22,0.1);--border-md:rgba(30,27,22,0.16);
+  --r:14px;--font:'Plus Jakarta Sans',sans-serif;--serif:'Fraunces',serif;
+}
+body{font-family:var(--font);background:transparent;color:var(--ink)}
+.shell{width:100%;background:var(--cream);border-radius:26px;border:0.5px solid var(--border-md);overflow:hidden;position:relative}
+.scr{display:none;flex-direction:column;min-height:660px;animation:fade .28s ease both}
+.scr.on{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideR{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.toast{position:absolute;bottom:76px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--ink);color:var(--white);padding:9px 20px;border-radius:22px;font-size:12px;font-weight:500;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;z-index:20;letter-spacing:.2px}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── ONBOARDING ── */
+.ob-wrap{display:flex;flex-direction:column;align-items:center;padding:40px 28px 32px;flex:1;background:var(--cream)}
+.ob-icon{width:96px;height:96px;background:var(--saffron-lt);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:46px;margin-bottom:24px;border:0.5px solid var(--saffron-md)}
+.ob-title{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--ink);text-align:center;line-height:1.2;margin-bottom:10px}
+.ob-title span{color:var(--saffron)}
+.ob-sub{font-size:13px;color:var(--ink-md);text-align:center;line-height:1.7;margin-bottom:32px;max-width:260px}
+.ob-dots{display:flex;gap:7px;margin-bottom:32px}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--cream3);transition:all .3s}
+.ob-dot.on{background:var(--saffron);width:22px;border-radius:4px}
+.ob-btn{width:100%;background:var(--saffron);color:var(--white);border:none;border-radius:14px;height:50px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,transform .15s;letter-spacing:.3px;margin-bottom:12px}
+.ob-btn:hover{background:var(--saffron-dk)}
+.ob-btn:active{transform:scale(.97)}
+.ob-skip{background:none;border:none;color:var(--ink-lt);font-family:var(--font);font-size:13px;cursor:pointer;padding:4px}
+
+/* ── TOP BAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 10px;background:var(--cream)}
+.loc-row{display:flex;flex-direction:column}
+.loc-label{font-size:10px;color:var(--ink-lt);font-weight:500;letter-spacing:.8px;text-transform:uppercase}
+.loc-val{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer}
+.loc-val i{font-size:14px;color:var(--saffron)}
+.tb-right{display:flex;gap:9px}
+.ico{width:36px;height:36px;background:var(--white);border:0.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-md);font-size:17px;position:relative;transition:background .2s,transform .15s}
+.ico:hover{background:var(--cream2);transform:scale(1.05)}
+.ico:active{transform:scale(.92)}
+.bdg{position:absolute;top:-3px;right:-3px;width:15px;height:15px;background:var(--saffron);border-radius:50%;font-size:9px;font-weight:700;color:var(--white);display:flex;align-items:center;justify-content:center;border:2px solid var(--cream)}
+
+/* ── SEARCH ── */
+.searchbar{margin:4px 20px 12px;display:flex;align-items:center;gap:10px;background:var(--white);border:0.5px solid var(--border-md);border-radius:12px;padding:0 14px;height:42px;transition:border-color .2s}
+.searchbar:focus-within{border-color:var(--saffron)}
+.searchbar i{font-size:17px;color:var(--ink-lt);flex-shrink:0}
+.searchbar input{flex:1;border:none;background:none;font-family:var(--font);font-size:13px;color:var(--ink);outline:none}
+.searchbar input::placeholder{color:var(--ink-lt)}
+.filter-btn{width:36px;height:28px;background:var(--saffron-lt);border:0.5px solid var(--saffron-md);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--saffron-dk);font-size:15px;flex-shrink:0}
+
+/* ── PROMO TICKER ── */
+.ticker-wrap{margin:0 20px 14px;background:var(--saffron-lt);border-radius:10px;padding:8px 14px;overflow:hidden;border:0.5px solid var(--saffron-md)}
+.ticker-inner{display:flex;gap:32px;white-space:nowrap;animation:ticker 18s linear infinite}
+.ticker-item{font-size:12px;font-weight:500;color:var(--saffron-dk);display:flex;align-items:center;gap:6px}
+.ticker-item i{font-size:13px}
+
+/* ── CATEGORIES ── */
+.cats{display:flex;gap:8px;padding:0 20px 14px;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer}
+.cat-ico{width:54px;height:54px;border-radius:16px;background:var(--white);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all .2s}
+.cat.on .cat-ico{background:var(--saffron);border-color:var(--saffron)}
+.cat:hover .cat-ico{border-color:var(--saffron-md);background:var(--saffron-lt)}
+.cat span{font-size:10px;color:var(--ink-md);font-weight:500}
+
+/* ── SECTION HEAD ── */
+.sh{display:flex;justify-content:space-between;align-items:center;padding:4px 20px 10px}
+.sh h3{font-size:15px;font-weight:600;color:var(--ink)}
+.sh a{font-size:12px;color:var(--saffron);cursor:pointer;font-weight:500}
+
+/* ── RESTAURANT CARDS ── */
+.rest-scroll{display:flex;gap:12px;padding:0 20px 16px;overflow-x:auto;scrollbar-width:none}
+.rest-scroll::-webkit-scrollbar{display:none}
+.rcard{flex-shrink:0;width:200px;background:var(--white);border-radius:var(--r);border:0.5px solid var(--border);cursor:pointer;transition:transform .2s,border-color .2s;overflow:hidden}
+.rcard:hover{transform:translateY(-2px);border-color:var(--border-md)}
+.rcard:active{transform:scale(.97)}
+.rcard-img{height:110px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:46px;position:relative}
+.rcard-promo{position:absolute;bottom:8px;left:8px;background:var(--herb-dk);color:var(--white);font-size:9px;font-weight:700;padding:3px 8px;border-radius:8px;letter-spacing:.4px}
+.rcard-body{padding:10px 12px 12px}
+.rcard-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.rcard-cuisine{font-size:11px;color:var(--ink-lt);margin-bottom:7px}
+.rcard-meta{display:flex;align-items:center;gap:10px}
+.rmeta{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--ink-md)}
+.rmeta i{font-size:12px;color:var(--saffron)}
+.rmeta.green i{color:var(--herb)}
+
+/* ── FOOD GRID ── */
+.food-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 20px 16px}
+.fcard{background:var(--white);border-radius:var(--r);border:0.5px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .2s,border-color .2s}
+.fcard:hover{transform:translateY(-2px);border-color:var(--border-md)}
+.fcard:active{transform:scale(.97)}
+.fcard-img{height:120px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.fcard-badge{position:absolute;top:8px;left:8px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:8px;letter-spacing:.3px}
+.fav-btn{position:absolute;top:7px;right:7px;width:26px;height:26px;background:var(--white);border-radius:50%;border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-lt);cursor:pointer;transition:all .2s}
+.fav-btn.on{color:#d94f3d;background:#fef2f0;border-color:#fcd4cf}
+.fcard-body{padding:10px 12px 12px}
+.fcard-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.fcard-rest{font-size:11px;color:var(--ink-lt);margin-bottom:7px}
+.fcard-foot{display:flex;align-items:center;justify-content:space-between}
+.fcard-price{font-size:14px;font-weight:700;color:var(--ink)}
+.add-btn{width:28px;height:28px;background:var(--saffron);border:none;border-radius:8px;color:var(--white);font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,background .2s}
+.add-btn:hover{background:var(--saffron-dk)}
+.add-btn:active{transform:scale(.88);animation:pop .3s ease}
+
+/* ── BOTTOM NAV ── */
+.bnav{display:flex;background:var(--white);padding:10px 0 16px;border-top:0.5px solid var(--border);margin-top:auto}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--ink-lt);cursor:pointer;border:none;background:none;padding:4px 0;transition:color .2s;letter-spacing:.2px}
+.ni i{font-size:20px;transition:transform .2s}
+.ni:hover i{transform:translateY(-1px)}
+.ni.on{color:var(--saffron)}
+.ni.on i{transform:scale(1.1)}
+
+/* ── RESTAURANT DETAIL ── */
+.rd-hero{height:190px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:80px;position:relative}
+.rd-back{position:absolute;top:14px;left:14px;width:36px;height:36px;background:var(--white);border:0.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--ink-md);transition:transform .15s}
+.rd-back:hover{transform:scale(1.05)}
+.rd-info{padding:16px 20px 12px;background:var(--cream)}
+.rd-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.rd-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.rd-tag{font-size:11px;background:var(--cream2);color:var(--ink-md);padding:3px 10px;border-radius:20px;border:0.5px solid var(--border)}
+.rd-meta{display:flex;gap:16px;align-items:center}
+.rdm{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--ink-md)}
+.rdm i{font-size:14px;color:var(--saffron)}
+.rdm.g i{color:var(--herb)}
+.menu-tabs{display:flex;gap:6px;padding:10px 20px;overflow-x:auto;scrollbar-width:none;background:var(--cream);border-bottom:0.5px solid var(--border)}
+.menu-tabs::-webkit-scrollbar{display:none}
+.mtab{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--border-md);background:var(--white);color:var(--ink-md);transition:all .2s}
+.mtab.on{background:var(--saffron);color:var(--white);border-color:var(--saffron)}
+.menu-list{padding:12px 20px;flex:1}
+.mitem{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border);animation:slideR .25s ease both}
+.mitem-emoji{width:64px;height:64px;background:var(--cream2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.mitem-info{flex:1}
+.mitem-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.mitem-desc{font-size:11px;color:var(--ink-lt);line-height:1.5;margin-bottom:6px}
+.mitem-foot{display:flex;align-items:center;justify-content:space-between}
+.mitem-price{font-size:14px;font-weight:700;color:var(--ink)}
+.mitem-add{display:flex;align-items:center;gap:0;background:var(--saffron-lt);border:0.5px solid var(--saffron-md);border-radius:10px;overflow:hidden}
+.mab{width:30px;height:30px;background:none;border:none;color:var(--saffron-dk);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;font-weight:600}
+.mab:hover{background:var(--saffron-md)}
+.maq{min-width:26px;text-align:center;font-size:13px;font-weight:600;color:var(--saffron-dk)}
+
+/* ── CART SCREEN ── */
+.cart-hd{padding:18px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+.cart-hd-left{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink)}
+.cart-sub{font-size:12px;color:var(--ink-lt);font-weight:400}
+.cart-rest{display:flex;align-items:center;gap:10px;margin:0 20px 12px;background:var(--herb-lt);border:0.5px solid var(--herb-md);border-radius:12px;padding:10px 14px}
+.cart-rest i{font-size:16px;color:var(--herb-dk)}
+.cart-rest span{font-size:12px;font-weight:500;color:var(--herb-dk)}
+.ci{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:0.5px solid var(--border);animation:slideR .25s ease both}
+.ci-em{width:56px;height:56px;background:var(--cream2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ci-info{flex:1}
+.ci-name{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.ci-price{font-size:12px;color:var(--ink-lt)}
+.ci-ctrl{display:flex;align-items:center;gap:0;background:var(--cream2);border-radius:8px;border:0.5px solid var(--border-md);overflow:hidden}
+.cqb{width:28px;height:28px;background:none;border:none;color:var(--ink);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.cqb:hover{background:var(--cream3)}
+.cqv{min-width:24px;text-align:center;font-size:13px;font-weight:600}
+.ci-del{background:none;border:none;color:var(--ink-lt);cursor:pointer;font-size:16px;padding:4px;margin-left:4px;transition:color .2s}
+.ci-del:hover{color:#d94f3d}
+.addr-sel{margin:12px 20px;background:var(--white);border:0.5px solid var(--border-md);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color .2s}
+.addr-sel:hover{border-color:var(--saffron-md)}
+.addr-ico{width:36px;height:36px;background:var(--saffron-lt);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--saffron-dk);flex-shrink:0}
+.addr-info{flex:1}
+.addr-lbl{font-size:11px;color:var(--ink-lt);margin-bottom:1px}
+.addr-val{font-size:13px;font-weight:500;color:var(--ink)}
+.cart-summ{margin:8px 20px;background:var(--cream2);border-radius:12px;padding:14px 16px}
+.csr{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:var(--ink-md)}
+.csr.tot{font-size:15px;font-weight:700;color:var(--ink);border-top:0.5px solid var(--border-md);padding-top:10px;margin-top:4px}
+.place-btn{margin:10px 20px 18px;background:var(--saffron);color:var(--white);border:none;border-radius:14px;height:50px;width:calc(100% - 40px);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,transform .15s;letter-spacing:.3px}
+.place-btn:hover{background:var(--saffron-dk)}
+.place-btn:active{transform:scale(.98)}
+
+/* ── TRACKING SCREEN ── */
+.track-hd{padding:18px 20px 8px;display:flex;align-items:center;gap:10px}
+.track-title{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink)}
+.track-card{margin:8px 20px;background:var(--white);border:0.5px solid var(--border-md);border-radius:var(--r);padding:18px}
+.eta-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.eta-label{font-size:12px;color:var(--ink-lt)}
+.eta-val{font-size:26px;font-weight:700;color:var(--ink);font-family:var(--serif)}
+.eta-sub{font-size:11px;color:var(--ink-lt)}
+.eta-pill{background:var(--herb-lt);color:var(--herb-dk);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:0.5px solid var(--herb-md)}
+.track-steps{margin-top:4px}
+.tstep{display:flex;align-items:flex-start;gap:14px;padding:10px 0;position:relative}
+.tstep:not(:last-child)::after{content:'';position:absolute;left:15px;top:34px;width:1px;height:calc(100% - 14px);background:var(--border-md)}
+.tstep.done::after{background:var(--herb-md)}
+.tstep-dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;border:0.5px solid var(--border-md);background:var(--cream2);color:var(--ink-lt);z-index:1}
+.tstep.done .tstep-dot{background:var(--herb-lt);border-color:var(--herb-md);color:var(--herb-dk)}
+.tstep.act .tstep-dot{background:var(--saffron-lt);border-color:var(--saffron-md);color:var(--saffron-dk);animation:pulse 1.4s infinite}
+.tstep-info{flex:1;padding-top:4px}
+.tstep-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.tstep.act .tstep-title{color:var(--saffron-dk)}
+.tstep-sub{font-size:11px;color:var(--ink-lt)}
+.rider-card{margin:12px 20px;background:var(--white);border:0.5px solid var(--border-md);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.rider-av{width:44px;height:44px;border-radius:50%;background:var(--cream3);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:var(--ink-md);flex-shrink:0}
+.rider-name{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.rider-sub{font-size:11px;color:var(--ink-lt)}
+.rider-acts{display:flex;gap:8px;margin-left:auto}
+.rider-btn{width:36px;height:36px;border-radius:10px;border:0.5px solid var(--border-md);background:var(--cream2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:var(--ink-md);transition:all .2s}
+.rider-btn:hover{background:var(--saffron-lt);border-color:var(--saffron-md);color:var(--saffron-dk)}
+.map-placeholder{margin:0 20px 12px;height:130px;background:var(--cream2);border-radius:var(--r);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--ink-lt)}
+.map-placeholder i{font-size:28px;color:var(--saffron)}
+.map-placeholder span{font-size:12px}
+.rate-btn{margin:8px 20px 18px;background:var(--cream2);color:var(--ink-md);border:0.5px solid var(--border-md);border-radius:14px;height:46px;width:calc(100% - 40px);font-family:var(--font);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s;letter-spacing:.2px}
+.rate-btn:hover{background:var(--cream3)}
+</style>
+
+<h2 class="sr-only">Food delivery app prototype covering onboarding, home with restaurants and food grid, restaurant menu, cart, and live order tracking screens</h2>
+
+<div class="shell">
+<div id="toast" class="toast"></div>
+
+<!-- ONBOARDING -->
+<div class="scr on" id="s-ob">
+  <div class="ob-wrap">
+    <div class="ob-icon" id="ob-icon">🍜</div>
+    <div class="ob-title" id="ob-title">Good food,<br><span>faster delivery</span></div>
+    <div class="ob-sub" id="ob-sub">Discover restaurants near you and get your favourite meals delivered hot and fresh.</div>
+    <div class="ob-dots">
+      <div class="ob-dot on" id="od0"></div>
+      <div class="ob-dot" id="od1"></div>
+      <div class="ob-dot" id="od2"></div>
+    </div>
+    <button class="ob-btn" id="ob-next" onclick="obNext()">Get Started</button>
+    <button class="ob-skip" onclick="go('s-home')">Skip for now</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="scr" id="s-home">
+  <div class="topbar">
+    <div class="loc-row">
+      <div class="loc-label">Delivering to</div>
+      <div class="loc-val"><i class="ti ti-map-pin" aria-hidden="true"></i>Jaipur, Rajasthan <i class="ti ti-chevron-down" style="font-size:13px;color:var(--ink-lt)" aria-hidden="true"></i></div>
+    </div>
+    <div class="tb-right">
+      <div class="ico"><i class="ti ti-bell" aria-hidden="true"></i></div>
+      <div class="ico" onclick="go('s-cart')" style="position:relative"><i class="ti ti-shopping-cart" aria-hidden="true"></i><div class="bdg" id="cart-bdg">2</div></div>
+    </div>
+  </div>
+  <div class="searchbar">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="text" placeholder="Search for food, restaurants..." id="srch" oninput="onSearch(this.value)">
+    <div class="filter-btn"><i class="ti ti-adjustments-horizontal" aria-hidden="true"></i></div>
+  </div>
+  <div class="ticker-wrap">
+    <div class="ticker-inner" id="ticker">
+      <span class="ticker-item"><i class="ti ti-flame" aria-hidden="true"></i>50% off on first order · Use FIRST50</span>
+      <span class="ticker-item"><i class="ti ti-bolt" aria-hidden="true"></i>Free delivery above ₹299</span>
+      <span class="ticker-item"><i class="ti ti-star" aria-hidden="true"></i>New: TasteBox now delivering in 20 min</span>
+      <span class="ticker-item"><i class="ti ti-flame" aria-hidden="true"></i>50% off on first order · Use FIRST50</span>
+      <span class="ticker-item"><i class="ti ti-bolt" aria-hidden="true"></i>Free delivery above ₹299</span>
+      <span class="ticker-item"><i class="ti ti-star" aria-hidden="true"></i>New: TasteBox now delivering in 20 min</span>
+    </div>
+  </div>
+  <div class="cats" id="cats">
+    <div class="cat on" onclick="filterCat(this,'all')"><div class="cat-ico">🍽️</div><span>All</span></div>
+    <div class="cat" onclick="filterCat(this,'biryani')"><div class="cat-ico">🍛</div><span>Biryani</span></div>
+    <div class="cat" onclick="filterCat(this,'pizza')"><div class="cat-ico">🍕</div><span>Pizza</span></div>
+    <div class="cat" onclick="filterCat(this,'burger')"><div class="cat-ico">🍔</div><span>Burgers</span></div>
+    <div class="cat" onclick="filterCat(this,'dessert')"><div class="cat-ico">🍰</div><span>Desserts</span></div>
+    <div class="cat" onclick="filterCat(this,'healthy')"><div class="cat-ico">🥗</div><span>Healthy</span></div>
+  </div>
+  <div class="sh"><h3>Top Restaurants</h3><a>See all</a></div>
+  <div class="rest-scroll" id="rest-scroll">
+    <div class="rcard" onclick="go('s-rest',{name:'Spice Garden',emoji:'🍛',cuisine:'North Indian · Mughlai',rating:'4.6',time:'28',cost:'₹180',promo:'20% OFF'})">
+      <div class="rcard-img">🍛<div class="rcard-promo">20% OFF</div></div>
+      <div class="rcard-body">
+        <div class="rcard-name">Spice Garden</div>
+        <div class="rcard-cuisine">North Indian · Mughlai</div>
+        <div class="rcard-meta">
+          <div class="rmeta"><i class="ti ti-star" aria-hidden="true"></i>4.6</div>
+          <div class="rmeta"><i class="ti ti-clock" aria-hidden="true"></i>28 min</div>
+          <div class="rmeta green"><i class="ti ti-moped" aria-hidden="true"></i>FREE</div>
+        </div>
+      </div>
+    </div>
+    <div class="rcard" onclick="go('s-rest',{name:'Pizza Palazzo',emoji:'🍕',cuisine:'Pizza · Italian',rating:'4.4',time:'35',cost:'₹250',promo:''})">
+      <div class="rcard-img">🍕</div>
+      <div class="rcard-body">
+        <div class="rcard-name">Pizza Palazzo</div>
+        <div class="rcard-cuisine">Pizza · Italian</div>
+        <div class="rcard-meta">
+          <div class="rmeta"><i class="ti ti-star" aria-hidden="true"></i>4.4</div>
+          <div class="rmeta"><i class="ti ti-clock" aria-hidden="true"></i>35 min</div>
+          <div class="rmeta"><i class="ti ti-moped" aria-hidden="true"></i>₹25</div>
+        </div>
+      </div>
+    </div>
+    <div class="rcard" onclick="go('s-rest',{name:'Burger Barn',emoji:'🍔',cuisine:'Burgers · Fast Food',rating:'4.7',time:'22',cost:'₹200',promo:'BUY 1 GET 1'})">
+      <div class="rcard-img">🍔<div class="rcard-promo">BUY 1 GET 1</div></div>
+      <div class="rcard-body">
+        <div class="rcard-name">Burger Barn</div>
+        <div class="rcard-cuisine">Burgers · Fast Food</div>
+        <div class="rcard-meta">
+          <div class="rmeta"><i class="ti ti-star" aria-hidden="true"></i>4.7</div>
+          <div class="rmeta"><i class="ti ti-clock" aria-hidden="true"></i>22 min</div>
+          <div class="rmeta green"><i class="ti ti-moped" aria-hidden="true"></i>FREE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sh"><h3>Popular Near You</h3><a>View all</a></div>
+  <div class="food-grid" id="food-grid"></div>
+  <div class="bnav">
+    <button class="ni on" onclick="go('s-home')"><i class="ti ti-home" aria-hidden="true"></i>Home</button>
+    <button class="ni" onclick="go('s-home')"><i class="ti ti-search" aria-hidden="true"></i>Explore</button>
+    <button class="ni" onclick="go('s-cart')"><i class="ti ti-shopping-cart" aria-hidden="true"></i>Cart</button>
+    <button class="ni" onclick="go('s-home')"><i class="ti ti-receipt" aria-hidden="true"></i>Orders</button>
+    <button class="ni" onclick="go('s-home')"><i class="ti ti-user" aria-hidden="true"></i>Profile</button>
+  </div>
+</div>
+
+<!-- RESTAURANT -->
+<div class="scr" id="s-rest">
+  <div class="rd-hero" id="rd-hero">
+    <span id="rd-emoji" style="font-size:78px">🍛</span>
+    <button class="rd-back" onclick="go('s-home')" aria-label="Back"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
+  </div>
+  <div class="rd-info">
+    <div class="rd-name" id="rd-name">Spice Garden</div>
+    <div class="rd-tags">
+      <div class="rd-tag" id="rd-cuisine">North Indian · Mughlai</div>
+      <div class="rd-tag">Pure Veg available</div>
+      <div class="rd-tag" id="rd-cost">₹180 for two</div>
+    </div>
+    <div class="rd-meta">
+      <div class="rdm"><i class="ti ti-star" aria-hidden="true"></i><span id="rd-rating">4.6</span></div>
+      <div class="rdm"><i class="ti ti-clock" aria-hidden="true"></i><span id="rd-time">28</span> min</div>
+      <div class="rdm g"><i class="ti ti-moped" aria-hidden="true"></i>Free delivery</div>
+    </div>
+  </div>
+  <div class="menu-tabs">
+    <div class="mtab on" onclick="menuTab(this,'starters')">Starters</div>
+    <div class="mtab" onclick="menuTab(this,'mains')">Mains</div>
+    <div class="mtab" onclick="menuTab(this,'rice')">Rice &amp; Breads</div>
+    <div class="mtab" onclick="menuTab(this,'desserts')">Desserts</div>
+    <div class="mtab" onclick="menuTab(this,'drinks')">Drinks</div>
+  </div>
+  <div class="menu-list" id="menu-list"></div>
+</div>
+
+<!-- CART -->
+<div class="scr" id="s-cart">
+  <div class="cart-hd">
+    <div>
+      <div class="cart-hd-left">Your Cart</div>
+      <div class="cart-sub" id="cart-sub">2 items · Spice Garden</div>
+    </div>
+    <button class="ico" onclick="go('s-home')" aria-label="Back"><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
+  </div>
+  <div class="cart-rest">
+    <i class="ti ti-building-store" aria-hidden="true"></i>
+    <span>Spice Garden · Jaipur</span>
+  </div>
+  <div id="cart-items">
+    <div class="ci" id="ci-a">
+      <div class="ci-em">🍢</div>
+      <div class="ci-info">
+        <div class="ci-name">Seekh Kebab (4 pcs)</div>
+        <div class="ci-price">₹220 per plate</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="ci-ctrl">
+          <button class="cqb" onclick="adjCI('a',-1,220)">−</button>
+          <span class="cqv" id="qa">1</span>
+          <button class="cqb" onclick="adjCI('a',1,220)">+</button>
+        </div>
+        <button class="ci-del" onclick="delCI('ci-a',220,1,'a')" aria-label="Remove"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div class="ci" id="ci-b">
+      <div class="ci-em">🍛</div>
+      <div class="ci-info">
+        <div class="ci-name">Butter Chicken + Naan</div>
+        <div class="ci-price">₹380 per set</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="ci-ctrl">
+          <button class="cqb" onclick="adjCI('b',-1,380)">−</button>
+          <span class="cqv" id="qb">1</span>
+          <button class="cqb" onclick="adjCI('b',1,380)">+</button>
+        </div>
+        <button class="ci-del" onclick="delCI('ci-b',380,1,'b')" aria-label="Remove"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="addr-sel" onclick="showToast('Address selector coming soon!')">
+    <div class="addr-ico"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+    <div class="addr-info">
+      <div class="addr-lbl">Delivering to</div>
+      <div class="addr-val">42 Ashok Nagar, Jaipur</div>
+    </div>
+    <i class="ti ti-chevron-right" style="font-size:16px;color:var(--ink-lt)" aria-hidden="true"></i>
+  </div>
+  <div class="cart-summ">
+    <div class="csr"><span>Item total</span><span id="cs-sub">₹600</span></div>
+    <div class="csr"><span>Delivery fee</span><span style="color:var(--herb-dk)">FREE</span></div>
+    <div class="csr"><span>Platform fee</span><span>₹5</span></div>
+    <div class="csr"><span>GST &amp; taxes</span><span id="cs-tax">₹30</span></div>
+    <div class="csr tot"><span>To pay</span><span id="cs-tot">₹635</span></div>
+  </div>
+  <button class="place-btn" onclick="go('s-track')"><i class="ti ti-lock" aria-hidden="true"></i>Place Order · <span id="cs-totbtn">₹635</span></button>
+</div>
+
+<!-- TRACKING -->
+<div class="scr" id="s-track">
+  <div class="track-hd">
+    <button class="ico" onclick="go('s-home')" aria-label="Home"><i class="ti ti-home" aria-hidden="true"></i></button>
+    <div class="track-title">Order Tracking</div>
+  </div>
+  <div class="map-placeholder">
+    <i class="ti ti-map-2" aria-hidden="true"></i>
+    <span>Live map — Order #SG20261482</span>
+  </div>
+  <div class="track-card">
+    <div class="eta-row">
+      <div>
+        <div class="eta-label">Estimated arrival</div>
+        <div class="eta-val" id="eta-val">28 min</div>
+        <div class="eta-sub">by 7:42 PM</div>
+      </div>
+      <div class="eta-pill">On time</div>
+    </div>
+    <div class="track-steps">
+      <div class="tstep done">
+        <div class="tstep-dot"><i class="ti ti-check" style="font-size:13px" aria-hidden="true"></i></div>
+        <div class="tstep-info"><div class="tstep-title">Order confirmed</div><div class="tstep-sub">7:10 PM · Restaurant accepted</div></div>
+      </div>
+      <div class="tstep done">
+        <div class="tstep-dot"><i class="ti ti-check" style="font-size:13px" aria-hidden="true"></i></div>
+        <div class="tstep-info"><div class="tstep-title">Preparing your food</div><div class="tstep-sub">7:12 PM · Kitchen is cooking</div></div>
+      </div>
+      <div class="tstep act">
+        <div class="tstep-dot"><i class="ti ti-moped" style="font-size:13px" aria-hidden="true"></i></div>
+        <div class="tstep-info"><div class="tstep-title">Out for delivery</div><div class="tstep-sub">Rider picked up · 2.4 km away</div></div>
+      </div>
+      <div class="tstep">
+        <div class="tstep-dot"><i class="ti ti-home" style="font-size:13px" aria-hidden="true"></i></div>
+        <div class="tstep-info"><div class="tstep-title">Delivered</div><div class="tstep-sub">Almost there!</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="rider-card">
+    <div class="rider-av">RK</div>
+    <div>
+      <div class="rider-name">Ramesh Kumar</div>
+      <div class="rider-sub">4.9 ★ · 1,240 deliveries</div>
+    </div>
+    <div class="rider-acts">
+      <div class="rider-btn" onclick="showToast('Calling Ramesh...')"><i class="ti ti-phone" aria-hidden="true"></i></div>
+      <div class="rider-btn" onclick="showToast('Opening chat...')"><i class="ti ti-message" aria-hidden="true"></i></div>
+    </div>
+  </div>
+  <button class="rate-btn" onclick="showToast('Rating screen coming soon!')"><i class="ti ti-star" style="font-size:14px;vertical-align:-1px;margin-right:6px" aria-hidden="true"></i>Rate your experience</button>
+</div>
+
+</div>
+
+<script>
+const obSlides=[
+  {icon:'🍜',title:'Good food,<br><span>faster delivery</span>',sub:'Discover restaurants near you and get your favourite meals hot and fresh.'},
+  {icon:'📍',title:'Track in<br><span>real time</span>',sub:'Watch your rider move live on the map. Know exactly when your food arrives.'},
+  {icon:'🎉',title:'Deals made<br><span>for you</span>',sub:'Personalised offers, exclusive promos and loyalty rewards every single day.'}
+];
+let obIdx=0;
+function obNext(){
+  obIdx++;
+  if(obIdx>=obSlides.length){go('s-home');return}
+  const s=obSlides[obIdx];
+  document.getElementById('ob-icon').textContent=s.icon;
+  document.getElementById('ob-title').innerHTML=s.title;
+  document.getElementById('ob-sub').textContent=s.sub;
+  for(let i=0;i<3;i++){const d=document.getElementById('od'+i);d.classList.toggle('on',i===obIdx)}
+  if(obIdx===obSlides.length-1)document.getElementById('ob-next').textContent='Let\'s eat!';
+}
+
+const foods=[
+  {emoji:'🍢',name:'Seekh Kebab',rest:'Spice Garden',price:'₹220',tag:'Bestseller',tagCls:'background:#FDF5E0;color:#633806'},
+  {emoji:'🍕',name:'Margherita Pizza',rest:'Pizza Palazzo',price:'₹349',tag:'New',tagCls:'background:#EAF3EE;color:#2D5C3C'},
+  {emoji:'🍔',name:'Classic Smash Burger',rest:'Burger Barn',price:'₹199',tag:'Bestseller',tagCls:'background:#FDF5E0;color:#633806'},
+  {emoji:'🍛',name:'Butter Chicken',rest:'Spice Garden',price:'₹280',tag:'',tagCls:''},
+  {emoji:'🍰',name:'Gulab Jamun Cake',rest:'Sweet Spot',price:'₹159',tag:'New',tagCls:'background:#EAF3EE;color:#2D5C3C'},
+  {emoji:'🥗',name:'Quinoa Power Bowl',rest:'Green Leaf',price:'₹249',tag:'Healthy',tagCls:'background:#EAF3EE;color:#2D5C3C'}
+];
+let favs={};
+
+function renderFoods(list){
+  document.getElementById('food-grid').innerHTML=list.map((f,i)=>`
+  <div class="fcard" onclick="go('s-rest')">
+    <div class="fcard-img">${f.emoji}
+      ${f.tag?`<div class="fcard-badge" style="${f.tagCls}">${f.tag}</div>`:''}
+      <div class="fav-btn ${favs[i]?'on':''}" onclick="event.stopPropagation();togFav(this,${i})" aria-label="Save"><i class="ti ti-heart" aria-hidden="true"></i></div>
+    </div>
+    <div class="fcard-body">
+      <div class="fcard-name">${f.name}</div>
+      <div class="fcard-rest">${f.rest}</div>
+      <div class="fcard-foot">
+        <span class="fcard-price">${f.price}</span>
+        <button class="add-btn" onclick="event.stopPropagation();quickAdd('${f.name}')" aria-label="Add"><i class="ti ti-plus" style="font-size:15px" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>`).join('');
+}
+renderFoods(foods);
+
+function togFav(el,i){favs[i]=!favs[i];el.classList.toggle('on');showToast(favs[i]?'Saved to favourites':'Removed from favourites')}
+function filterCat(el,cat){
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));el.classList.add('on');
+  if(cat==='all'){renderFoods(foods);return}
+  const map={biryani:['🍛','🍢'],pizza:['🍕'],burger:['🍔'],dessert:['🍰'],healthy:['🥗']};
+  const ok=map[cat]||[];
+  renderFoods(ok.length?foods.filter(f=>ok.includes(f.emoji)):foods);
+}
+function onSearch(v){
+  if(!v.trim()){renderFoods(foods);return}
+  renderFoods(foods.filter(f=>f.name.toLowerCase().includes(v.toLowerCase())||f.rest.toLowerCase().includes(v.toLowerCase())));
+}
+function quickAdd(name){
+  let n=parseInt(document.getElementById('cart-bdg').textContent||'0')+1;
+  document.getElementById('cart-bdg').textContent=n;
+  showToast(name+' added to cart');
+}
+
+const menuData={
+  starters:[{e:'🍢',n:'Seekh Kebab (4 pcs)',d:'Minced lamb kebabs, mint chutney',p:'₹220'},{e:'🧅',n:'Onion Bhaji Platter',d:'Crispy onion fritters, tamarind dip',p:'₹120'},{e:'🍗',n:'Chicken Tikka',d:'Tandoor-marinated chicken pieces',p:'₹260'}],
+  mains:[{e:'🍛',n:'Butter Chicken',d:'Slow-cooked tomato cream sauce',p:'₹280'},{e:'🥘',n:'Dal Makhani',d:'Black lentils, overnight slow cook',p:'₹180'},{e:'🍖',n:'Lamb Rogan Josh',d:'Kashmiri spice, tender lamb',p:'₹340'}],
+  rice:[{e:'🍚',n:'Chicken Biryani',d:'Aged basmati, whole spices',p:'₹320'},{e:'🫓',n:'Butter Naan (2 pcs)',d:'Soft leavened bread from tandoor',p:'₹60'},{e:'🍚',n:'Steamed Basmati Rice',d:'Fragrant long-grain rice',p:'₹50'}],
+  desserts:[{e:'🍮',n:'Gulab Jamun (3 pcs)',d:'Soft milk dumplings, rose syrup',p:'₹90'},{e:'🍨',n:'Kulfi Falooda',d:'Pistachio kulfi, rose milk, basil seeds',p:'₹130'}],
+  drinks:[{e:'🥛',n:'Mango Lassi',d:'Fresh mango, yogurt, cardamom',p:'₹80'},{e:'🧃',n:'Jaljeera Soda',d:'Spiced cumin cooler',p:'₹60'}]
+};
+let menuQtys={};
+function menuTab(el,cat){
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  const items=menuData[cat]||[];
+  document.getElementById('menu-list').innerHTML=items.map((it,i)=>{
+    const k=cat+i;const q=menuQtys[k]||0;
+    return`<div class="mitem">
+      <div class="mitem-emoji">${it.e}</div>
+      <div class="mitem-info">
+        <div class="mitem-name">${it.n}</div>
+        <div class="mitem-desc">${it.d}</div>
+        <div class="mitem-foot">
+          <span class="mitem-price">${it.p}</span>
+          <div class="mitem-add">
+            <button class="mab" onclick="adjMenu('${k}',this,-1,'${it.n}')">−</button>
+            <span class="maq" id="mq-${k}">${q||0}</span>
+            <button class="mab" onclick="adjMenu('${k}',this,1,'${it.n}')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`}).join('');
+}
+menuTab(document.querySelector('.mtab'),'starters');
+
+function adjMenu(k,btn,d,name){
+  menuQtys[k]=Math.max(0,(menuQtys[k]||0)+d);
+  const el=document.getElementById('mq-'+k);
+  if(el)el.textContent=menuQtys[k];
+  if(d>0){
+    let n=parseInt(document.getElementById('cart-bdg').textContent||'0')+1;
+    document.getElementById('cart-bdg').textContent=n;
+    showToast(name+' added');
+  }
+}
+
+let ctot=600;let cqtys={a:1,b:1};let cprices={a:220,b:380};
+function adjCI(id,d,price){
+  let q=Math.max(0,cqtys[id]+d);
+  if(q===0){delCI('ci-'+id,price,cqtys[id],id);return}
+  ctot+=d*price;cqtys[id]=q;
+  document.getElementById('q'+id).textContent=q;
+  updCart();
+}
+function delCI(ciId,price,qty,id){
+  ctot-=price*(cqtys[id]||qty);
+  cqtys[id]=0;
+  const el=document.getElementById(ciId);
+  if(el){el.style.opacity='0';el.style.transform='translateX(28px)';el.style.transition='all .3s';setTimeout(()=>{el.remove();updCart()},280)}
+  showToast('Item removed');
+}
+function updCart(){
+  const tax=Math.round(ctot*0.05);const tot=ctot+tax+5;
+  const fmt=v=>'₹'+Math.max(0,v).toLocaleString('en-IN');
+  document.getElementById('cs-sub').textContent=fmt(ctot);
+  document.getElementById('cs-tax').textContent=fmt(tax);
+  document.getElementById('cs-tot').textContent=fmt(tot);
+  document.getElementById('cs-totbtn').textContent=fmt(tot);
+  const cnt=Object.values(cqtys).filter(v=>v>0).length;
+  document.getElementById('cart-sub').textContent=cnt+' item'+(cnt!==1?'s':'')+' · Spice Garden';
+  document.getElementById('cart-bdg').textContent=cnt;
+}
+
+function go(id,data){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  if(data&&id==='s-rest'){
+    document.getElementById('rd-emoji').textContent=data.emoji||'🍛';
+    document.getElementById('rd-name').textContent=data.name||'';
+    document.getElementById('rd-cuisine').textContent=data.cuisine||'';
+    document.getElementById('rd-rating').textContent=data.rating||'';
+    document.getElementById('rd-time').textContent=data.time||'';
+    document.getElementById('rd-cost').textContent=data.cost+' for two'||'';
+    menuTab(document.querySelector('.mtab.on')||document.querySelector('.mtab'),'starters');
+    document.querySelectorAll('.mtab').forEach((t,i)=>{t.classList.toggle('on',i===0)});
+  }
+  if(id==='s-track'){startEta()}
+  window.scrollTo(0,0);
+}
+
+let etaTimer;
+function startEta(){
+  let mins=28;
+  clearInterval(etaTimer);
+  etaTimer=setInterval(()=>{
+    if(mins>0){mins--;document.getElementById('eta-val').textContent=mins+' min'}
+    else clearInterval(etaTimer);
+  },8000);
+}
+
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2300);
+}
+</script>
